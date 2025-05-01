@@ -10,26 +10,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码
+      # 1. 拉取代码（关键修复）
       - name: Checkout Code
-        uses: actions/upload-artifact@v3
+        uses: actions/checkout@v4  # 修正为 checkout 动作
 
-      # 2. 安装 Conan（指定版本）
+      # 2. 安装系统构建工具（可选但推荐）
+      - name: Install Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      # 3. 安装 Conan（指定版本）
       - name: Install Conan
         run: |
           pip install conan==2.0.11
           conan profile new default --detect > /dev/null
           conan profile update settings.compiler.libcxx=libstdc++11 default
 
-      # 3. 执行项目构建
+      # 4. 执行项目构建
       - name: Build Project
         run: |
           chmod +x ./build.sh  # 确保脚本可执行
           ./build.sh
 
-      # 4. 上传构建产物
+      # 5. 上传构建产物
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-output
-          path: build/ # 确认路径正确
+          path build/  # 根据实际构建产物路径调整

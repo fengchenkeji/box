@@ -1,0 +1,13 @@
+[settings]
+os=Android
+os.api_level=21
+arch=armv8
+compiler=clang
+compiler.version=18
+compiler.libcxx=c++_static
+compiler.cppstd=14
+build_type=Release
+
+# You might need Ninja conf and tool-requires in Windows too
+[tool_requires]
+android-ndk/[*]

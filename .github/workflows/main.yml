@@ -1,0 +1,34 @@
+name: Conan CI Build
+
+on:
+  push:
+    branches: [main]  # 主分支推送时触发
+  pull_request:
+    branches: [main]  # PR 合并时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 或 windows-latest/macos-latest
+    steps:
+      # 1. 拉取代码
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. 安装 Conan（可选：指定版本）
+      - name: Install Conan
+        run: |
+          pip install conan==2.0.11  # 固定版本避免兼容性问题
+          conan profile new default --detect > /dev/null  # 生成默认 Profile
+          conan profile update settings.compiler.libcxx=libstdc++11 default  # 示例：修改 C++ 标准库
+
+      # 4. 执行项目构建（示例：CMake 项目）
+      - name: Build Project
+        run: |
+          sh build.sh
+
+      # 6. 上传构建产物（可选）
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: build/bin/  # 示例：二进制文件路径

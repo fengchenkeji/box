@@ -12,4 +12,4 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 
 # 仅在构建成功后运行程序
-./my_app
+

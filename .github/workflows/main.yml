@@ -31,6 +31,7 @@ jobs:
       # 4. 执行项目构建
       - name: Build Project
         run: |
+          conan profile detect --force
           chmod +x ./build.sh  # 确保脚本可执行
           ./build.sh
 

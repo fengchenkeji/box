@@ -24,7 +24,8 @@ jobs:
       - name: Install Conan
         run: |
           pip install conan==2.0.11
-          conan profile detect --force > /dev/null
+          conan profile detect --force
+          #conan profile detect --force > /dev/null
           conan profile update settings.compiler.libcxx=libstdc++11 default
 
       # 4. 执行项目构建

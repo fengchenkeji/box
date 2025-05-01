@@ -12,12 +12,12 @@ jobs:
     steps:
       # 1. 拉取代码
       - name: Checkout Code
-        uses: actions/checkout@v4
+        #uses: actions/checkout@v4
 
       # 2. 安装 Conan（可选：指定版本）
       - name: Install Conan
         run: |
-          pip install conan==2.0.11  # 固定版本避免兼容性问题
+          pip install conan # 固定版本避免兼容性问题
           conan profile new default --detect > /dev/null  # 生成默认 Profile
           conan profile update settings.compiler.libcxx=libstdc++11 default  # 示例：修改 C++ 标准库
 

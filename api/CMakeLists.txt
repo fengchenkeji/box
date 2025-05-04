@@ -3,15 +3,14 @@ cmake_minimum_required(VERSION 3.15)
 # 定义项目名称和使用的编程语言
 project(MyProject_api LANGUAGES CXX)
 
+set(CMAKE_TOOLCHAIN_FILE "vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 启用位置无关代码（共享库必需）
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-# 包含Conan生成的配置信息
-include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)  # 修正路径为更常见的构建目录
 
 # 查找Conan管理的依赖库
 find_package(fmt REQUIRED)

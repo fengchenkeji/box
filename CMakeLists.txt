@@ -2,12 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project(BOX LANGUAGES CXX)
 
-# 确保 Conan 工具链文件只包含一次
-if(EXISTS "${CMAKE_BINARY_DIR}/conan_toolchain.cmake")
-    include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
-else()
-    message(FATAL_ERROR "Conan toolchain file not found. Run 'conan install'.")
-endif()
+# 指定 vcpkg 工具链文件
+set(CMAKE_TOOLCHAIN_FILE "vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # 使用 Conan 查找并链接依赖
 find_package(fmt REQUIRED)

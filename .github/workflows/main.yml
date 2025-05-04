@@ -23,17 +23,17 @@ jobs:
       # 3. 安装 Conan（指定版本）
       - name: Install Conan
         run: |
-          pip install conan==2.0.11          
-          conan profile detect --force
+          vcpkg/bootstrap-vcpkg.sh
+          vcpkg/vcpkg -update-baseline
+          #pip install conan==2.0.11          
+          #conan profile detect --force
           #conan profile detect --force > /dev/null
           #conan profile update settings.compiler.libcxx=libstdc++11 default
 
       # 4. 执行项目构建
       - name: Build Project
         run: |
-          conan profile detect --force
-          chmod +x ./build.sh  # 确保脚本可执行
-          ./build.sh
+          vcpkg/vcpkg install --triplet=arm64-linux
 
       # 5. 上传构建产物
       - name: Upload Artifact

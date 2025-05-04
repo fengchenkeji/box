@@ -1,4 +1,4 @@
-name: Build with vcpkg
+name: Build with Manual vcpkg
 
 on:
   push:
@@ -10,53 +10,58 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 检出代码（含子模块）
-      - name: Checkout code with submodules
+      # 1. 检出项目代码（不加载子模块）
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          submodules: recursive  # 递归加载子模块（若项目含子模块）
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2. 设置构建环境
-      - name: Setup build environment
+      # 2. 安装基础编译工具链
+      - name: Install build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build  # 基础编译工具
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            curl unzip tar
 
-      # 3. 初始化 vcpkg
+      # 3. 强制清理旧目录并重新克隆 vcpkg
+      - name: Clone vcpkg
+        run: |
+          rm -rf vcpkg  # 关键：删除残留目录
+          git clone https://github.com/Microsoft/vcpkg.git
+          cd vcpkg
+          git pull origin master  # 确保拉取最新代码
+
+      # 4. 初始化 vcpkg
       - name: Bootstrap vcpkg
         run: |
-          git clone https://github.com/Microsoft/vcpkg.git  # 若未将vcpkg作为子模块
           chmod +x vcpkg/bootstrap-vcpkg.sh
           ./vcpkg/bootstrap-vcpkg.sh
-          echo "VCPKG_ROOT=$(pwd)/vcpkg" >> $GITHUB_ENV  # 设置环境变量
+          echo "VCPKG_ROOT=$(pwd)/vcpkg" >> $GITHUB_ENV
 
-      # 4. 更新基线（关键修复步骤）
+      # 5. 更新基线（防止依赖版本冲突）
       - name: Update vcpkg baseline
-        run: |
-          $VCPKG_ROOT/vcpkg x-update-baseline  # 使用新版命令替代 update-baseline
+        run: $VCPKG_ROOT/vcpkg x-update-baseline
 
-      # 5. 安装项目依赖
+      # 6. 安装项目依赖
       - name: Install dependencies
         run: |
           $VCPKG_ROOT/vcpkg install \
             --triplet=x64-linux \
-            --x-install-root=dependencies \
-            --clean-after-build  # 安装完成后清理临时文件
+            --clean-after-build \
+            fmt boost zlib  # 替换为你的实际依赖列表
 
-      # 6. 构建项目（示例）
-      - name: Build project with CMake
+      # 7. 构建项目
+      - name: Build project
         run: |
           cmake -B build \
             -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
             -DCMAKE_BUILD_TYPE=Release
-          cmake --build build --config Release
+          cmake --build build --parallel 4
 
-      # 7. 缓存优化（可选）
+      # 8. 缓存优化（可选）
       - name: Cache vcpkg binaries
         uses: actions/cache@v3
         with:
-          path: |
-            vcpkg/installed
-            vcpkg/buildtrees
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+          path: vcpkg/installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}

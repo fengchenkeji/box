@@ -10,36 +10,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码（关键修复）
+      # 1. 正确拉取代码及子模块
       - name: Checkout Code
-        uses: actions/checkout@v4  # 修正为 checkout 动作
+        uses: actions/checkout@v4
         with: 
-        submodule: recursive
+          submodules: recursive  # 修复参数名和缩进
 
-      # 2. 安装系统构建工具（可选但推荐）
+      # 2. 安装系统构建工具
       - name: Install Build Tools
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential cmake
 
-      # 3. 安装 Conan（指定版本）
-      - name: Install Conan
+      # 3. 初始化 vcpkg（原误标为 Conan）
+      - name: Setup vcpkg
         run: |
-          vcpkg/bootstrap-vcpkg.sh
-          vcpkg/vcpkg -update-baseline
-          #pip install conan==2.0.11          
-          #conan profile detect --force
-          #conan profile detect --force > /dev/null
-          #conan profile update settings.compiler.libcxx=libstdc++11 default
+          chmod +x vcpkg/bootstrap-vcpkg.sh  # 确保脚本可执行
+          ./vcpkg/bootstrap-vcpkg.sh
+          ./vcpkg/vcpkg update-baseline
 
-      # 4. 执行项目构建
+      # 4. 安装依赖并构建项目
       - name: Build Project
         run: |
-          vcpkg/vcpkg install --triplet=arm64-linux
+          ./vcpkg/vcpkg install --triplet=arm64-linux
+          # 若需集成到 CMake，添加以下环境变量：
+          # echo "CMAKE_TOOLCHAIN_FILE=${PWD}/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV
 
-      # 5. 上传构建产物
+      # 5. 上传构建产物（修正缩进和冒号）
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-            path build/  # 根据实际构建产物路径调整
+          path: build/  # 根据实际路径调整

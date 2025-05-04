@@ -1,44 +1,62 @@
-name: Conan CI Build
+name: Build with vcpkg
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 正确拉取代码及子模块
-      - name: Checkout Code
+      # 1. 检出代码（含子模块）
+      - name: Checkout code with submodules
         uses: actions/checkout@v4
-        with: 
-          submodules: recursive  # 修复参数名和缩进
+        with:
+          submodules: recursive  # 递归加载子模块（若项目含子模块）
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2. 安装系统构建工具
-      - name: Install Build Tools
+      # 2. 设置构建环境
+      - name: Setup build environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake
+          sudo apt-get install -y build-essential cmake ninja-build  # 基础编译工具
 
-      # 3. 初始化 vcpkg（原误标为 Conan）
-      - name: Setup vcpkg
+      # 3. 初始化 vcpkg
+      - name: Bootstrap vcpkg
         run: |
-          chmod +x vcpkg/bootstrap-vcpkg.sh  # 确保脚本可执行
+          git clone https://github.com/Microsoft/vcpkg.git  # 若未将vcpkg作为子模块
+          chmod +x vcpkg/bootstrap-vcpkg.sh
           ./vcpkg/bootstrap-vcpkg.sh
-          ./vcpkg/vcpkg update-baseline
+          echo "VCPKG_ROOT=$(pwd)/vcpkg" >> $GITHUB_ENV  # 设置环境变量
 
-      # 4. 安装依赖并构建项目
-      - name: Build Project
+      # 4. 更新基线（关键修复步骤）
+      - name: Update vcpkg baseline
         run: |
-          ./vcpkg/vcpkg install --triplet=arm64-linux
-          # 若需集成到 CMake，添加以下环境变量：
-          # echo "CMAKE_TOOLCHAIN_FILE=${PWD}/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV
+          $VCPKG_ROOT/vcpkg x-update-baseline  # 使用新版命令替代 update-baseline
 
-      # 5. 上传构建产物（修正缩进和冒号）
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      # 5. 安装项目依赖
+      - name: Install dependencies
+        run: |
+          $VCPKG_ROOT/vcpkg install \
+            --triplet=x64-linux \
+            --x-install-root=dependencies \
+            --clean-after-build  # 安装完成后清理临时文件
+
+      # 6. 构建项目（示例）
+      - name: Build project with CMake
+        run: |
+          cmake -B build \
+            -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release
+
+      # 7. 缓存优化（可选）
+      - name: Cache vcpkg binaries
+        uses: actions/cache@v3
         with:
-          name: build-output
-          path: build/  # 根据实际路径调整
+          path: |
+            vcpkg/installed
+            vcpkg/buildtrees
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}

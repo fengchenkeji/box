@@ -14,7 +14,6 @@ jobs:
       - name: Install and setup Conan
         uses: conan-io/setup-conan@v1
         with:
-          config_urls: https://mycompany.com/conan/configs.git
           cache_packages: true
 
       - name: Build and upload package

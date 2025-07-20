@@ -16,13 +16,17 @@ jobs:
         with:
           cache_packages: true
 
-      - name: Build and upload package
+      - name: dow_ndk
         run: |
           pwd 
           ls
           sleep 1
           ls
           sh dow_ndk.sh
+        with:
+            cache_packages: true
+      - name: build
+        run: |
           conan create . -pr:a android --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

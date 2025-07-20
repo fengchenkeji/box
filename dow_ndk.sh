@@ -8,6 +8,6 @@ else
 fi
 
 # 检查任意类型的文件/目录是否存在
-if [ -e "/path/to/file" ]; then
-    echo "文件或目录存在"
-fi
+#if [ -e "/path/to/file" ]; then
+#    echo "文件或目录存在"
+#fi

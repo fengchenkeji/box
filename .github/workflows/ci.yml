@@ -23,8 +23,6 @@ jobs:
           sleep 1
           ls
           sh dow_ndk.sh
-        with:
-            cache_packages: true
       - name: build
         run: |
           conan create . -pr:a android --build=missing

@@ -4,7 +4,7 @@ if [ -f "$PWD/android_ndk" ]; then
 else
     echo "ndk未安装"
     wget -O android.zip https://googledownloads.cn/android/repository/android-ndk-r27d-linux.zip
-    unzip -d android.zip android_ndk
+    unzip android.zip -d android_ndk
 fi
 
 # 检查任意类型的文件/目录是否存在

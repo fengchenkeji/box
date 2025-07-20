@@ -1,0 +1,24 @@
+name: Build and upload Conan package
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install and setup Conan
+        uses: conan-io/setup-conan@v1
+        with:
+          config_urls: https://mycompany.com/conan/configs.git
+          cache_packages: true
+
+      - name: Build and upload package
+        run: |
+          conan create . -pr:a android --build=missing
+          conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
+          conan upload "*" --confirm --remote artifactory

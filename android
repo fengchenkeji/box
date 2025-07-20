@@ -10,4 +10,4 @@ build_type=Release
 
 # You might need Ninja conf and tool-requires in Windows too
 [tool_requires]
-android-ndk/[*]
+tools.android:ndk_path=$PWD/android_ndk/android-ndk-r27d

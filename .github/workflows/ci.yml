@@ -18,7 +18,9 @@ jobs:
 
       - name: Build and upload package
         run: |
-          pwd ls
+          pwd 
+          ls
+          sleep 1
           sh dow_ndk.sh
           conan create . -pr:a android --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}

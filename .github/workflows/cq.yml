@@ -1,4 +1,5 @@
 name: Build and upload Conan package
+
 on:
   push:
     branches:
@@ -7,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -14,17 +17,17 @@ jobs:
         uses: conan-io/setup-conan@v1
         with:
           cache_packages: true
+
       - name: Install android-ndk(r27d)
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-            ndk-version: r27d
-            add-to-path: false
+          ndk-version: r27d
+          add-to-path: false
 
       - name: Build and upload package
         run: |
-          env:
-      ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          export ANDROID_NDK_HOME="${{ steps.setup-ndk.outputs.ndk-path }}"
           conan create . -pr:a myprofile --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

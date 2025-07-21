@@ -20,14 +20,13 @@ jobs:
         with:
              ndk-version: r27d
       - name: dow_ndk
+        env:
+      ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           pwd 
           ls
           sleep 1
           ls
-          
-          env:
-      ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
           conan create . -pr:a android --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

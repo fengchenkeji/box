@@ -10,4 +10,4 @@ build_type=Release
 
 # You might need Ninja conf and tool-requires in Windows too
 [tool_requires]
-tools.android:ndk_path=/home/runner/work/box/box/android_ndk/android-ndk-r27d
+tools.android:ndk_path=/opt/android_ndk

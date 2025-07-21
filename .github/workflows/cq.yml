@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps :
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -15,18 +15,17 @@ jobs:
         uses: conan-io/setup-conan@v1
         with:
           cache_packages: true
-      - name : install android ndk(r27d)
+      - name: Install android-ndk(r27d)
         uses: nttld/setup-ndk@v1
+        id: setup-ndk
         with:
-             ndk-version: r27d
-      - name: dow_ndk
-        env:
-      ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+            ndk-version: r27d
+            add-to-path: false
+
+      - name: Build and upload package
         run: |
-          pwd 
-          ls
-          sleep 1
-          ls
-          conan create . -pr:a android --build=missing
+          env:
+      ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          conan create . -pr:a myprofile --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

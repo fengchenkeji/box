@@ -28,6 +28,6 @@ jobs:
       - name: Build and upload package
         run: |
           export ANDROID_NDK_HOME="${{ steps.setup-ndk.outputs.ndk-path }}"
-          conan create . -pr:a myprofile --build=missing
+          conan create . -pr:a android --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

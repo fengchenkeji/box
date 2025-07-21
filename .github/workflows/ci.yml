@@ -19,8 +19,6 @@ jobs:
         uses: nttld/setup-ndk@v1
         with:
              ndk-version: r27d
-        run: |
-          conan config set tools.android:ndk_path=${{ steps.android-ndk.outputs.ndk-path }}
       - name: dow_ndk
         run: |
           pwd 
@@ -28,6 +26,7 @@ jobs:
           sleep 1
           ls
           #sh dow_ndk.sh
+          conan config set tools.android:ndk_path=${{ steps.android-ndk.outputs.ndk-path }}
           conan create . -pr:a android --build=missing
           conan remote login artifactory developer -p ${{ secrets.MY_CONAN_PASSWORD }}
           conan upload "*" --confirm --remote artifactory

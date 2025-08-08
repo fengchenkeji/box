@@ -8,7 +8,6 @@ compiler.libcxx=c++_shared
 compiler.cppstd=14
 build_type=Release
 
-[env]
-CONAN_CMAKE_TOOLCHAIN_FILE=/opt/hostedtoolcache/ndk/r27d/x64/build/cmake/android.toolchain.cmake
 [tool_requires]
+CONAN_CMAKE_TOOLCHAIN_FILE=/opt/hostedtoolcache/ndk/r27d/x64/build/cmake/android.toolchain.cmake
 tools.android:ndk_path=/opt/hostedtoolcache/ndk/r27d/x64

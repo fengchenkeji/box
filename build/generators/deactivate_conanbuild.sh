@@ -1,1 +1,0 @@
-. "/data/data/com.termux/files/home/box/build/generators/deactivate_conanbuildenv-release-armv7.sh"

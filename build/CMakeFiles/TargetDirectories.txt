@@ -1,8 +1,0 @@
-/data/data/com.termux/files/home/box/build/CMakeFiles/hello.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/box.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/edit_cache.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/rebuild_cache.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/list_install_components.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/install.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/install/local.dir
-/data/data/com.termux/files/home/box/build/CMakeFiles/install/strip.dir

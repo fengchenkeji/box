@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(box)
 
-set(CMAKE_INSTALL_PREFIX "./app")
+set(CMAKE_INSTALL_PREFIX "./bin/app")
 # 生成动态库
 add_library(hello SHARED src/hello.cpp)
 

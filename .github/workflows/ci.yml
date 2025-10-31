@@ -37,8 +37,6 @@ jobs:
 
       - name: Find generated files and compress to ZIP
         run: |
-            pwd
-            ls 
           # 假设 Conan 包生成在 ./build 或 ~/.conan/data 目录下
           # 根据实际情况调整路径（例如：查找特定文件或目录）
           #OUTPUT_DIR="./app"  # 修改为你的实际输出目录
@@ -55,5 +53,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
             name: box
-            path: ${{ github.workspace }}/app  # 上传 ./app/ 目录
+            path: ${{ github.workspace }}/bin  # 上传 ./app/ 目录
             

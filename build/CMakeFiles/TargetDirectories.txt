@@ -1,0 +1,3 @@
+/data/data/com.termux/files/home/box/build/CMakeFiles/box.dir
+/data/data/com.termux/files/home/box/build/CMakeFiles/edit_cache.dir
+/data/data/com.termux/files/home/box/build/CMakeFiles/rebuild_cache.dir

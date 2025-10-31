@@ -1,0 +1,12 @@
+include(default)
+
+[settings]
+# Just an example, you need to use your real settings
+os=Android
+os.api_level=26
+arch=armv8
+compiler=clang
+compiler.version=19
+compiler.libcxx=c++_shared
+compiler.cppstd=14
+

@@ -1,0 +1,1 @@
+. "/data/data/com.termux/files/home/box/build/generators/conanrunenv-release-armv7.sh"

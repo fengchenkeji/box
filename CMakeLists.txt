@@ -12,11 +12,13 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 # 链接动态库
 target_link_libraries(${PROJECT_NAME} PRIVATE hello)
 
-# 设置 RPATH（修复空格和括号问题）
+# 设置 RPATH（关键优化）
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INSTALL_RPATH "\$ORIGIN/lib"  # 属性名后必须有空格
-    BUILD_RPATH "\$ORIGIN/lib"    # 此处同理
-)  # 闭合括号不可缺失
+    INSTALL_RPATH "\$ORIGIN/lib"
+    BUILD_RPATH "\$ORIGIN/lib"
+    # 允许运行时修改 RPATH（调试用）
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+)
 
 # 安装配置
 install(TARGETS hello DESTINATION lib)

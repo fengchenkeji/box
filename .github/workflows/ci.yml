@@ -33,7 +33,7 @@ jobs:
         run: |
           conan install . --build=missing --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
           conan create . --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
-          cmake install build
+          cmake --install build
 
       - name: Find generated files and compress to ZIP
         run: |

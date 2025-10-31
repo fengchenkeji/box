@@ -49,8 +49,8 @@ jobs:
           #echo "ZIP contents:"
           #unzip -l "$ZIP_FILE"
 
-      - name: Upload ZIP as artifact
+      - name: Upload directory with parent
         uses: actions/upload-artifact@v4
         with:
-          name: box.zip
-          path: ./bin/**
+            name: my-artifact
+            path: ./app/  # 上传 ./app/ 目录

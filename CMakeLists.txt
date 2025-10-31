@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(box)
 
 # 设置安装路径（可选，默认是 /usr/local）
-set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
+set(CMAKE_INSTALL_PREFIX ./bin/app")
 
 # 生成动态库
 add_library(hello SHARED src/hello.cpp)

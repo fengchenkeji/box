@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(box)
 
-# 设置安装路径（可选，默认是 /usr/local）
-set(CMAKE_INSTALL_PREFIX ./bin/app")
+set(CMAKE_INSTALL_PREFIX "./bin/app")
 
 # 生成动态库
 add_library(hello SHARED src/hello.cpp)
@@ -13,12 +12,12 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 # 链接动态库
 target_link_libraries(${PROJECT_NAME} PRIVATE hello)
 
-# 设置 RPATH：使可执行文件在运行时从 `$ORIGIN/../lib` 查找 .so
+# 设置 RPATH（修复空格和括号问题）
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INSTALL_RPATH "$ORIGIN/../lib"  # 安装后：./bin/app/box 查找 ./bin/app/../lib/
-    BUILD_RPATH "$ORIGIN"          # 构建时：./box 直接从当前目录查找
-)
+    INSTALL_RPATH "$ORIGIN/lib"  # 属性名后必须有空格
+    BUILD_RPATH "$ORIGIN/lib"    # 此处同理
+)  # 闭合括号不可缺失
 
-# 安装动态库到 lib/，可执行文件到 bin/
+# 安装配置
 install(TARGETS hello DESTINATION lib)
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION ./)  # 统一安装到 bin/

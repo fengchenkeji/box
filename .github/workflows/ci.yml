@@ -53,5 +53,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
             name: box
-            path: ${{ github.workspace }}/bin  # 上传 ./app/ 目录
+            path: ${{ github.workspace }}/app  # 上传 ./app/ 目录
             

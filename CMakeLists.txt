@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(box)
 
-set(CMAKE_INSTALL_PREFIX "./bin/app")
+set(CMAKE_INSTALL_PREFIX "./app")
 
 # 生成动态库
 add_library(hello SHARED src/hello.cpp)
@@ -20,4 +20,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # 安装配置
 install(TARGETS hello DESTINATION lib)
-install(TARGETS ${PROJECT_NAME} DESTINATION ./)  # 统一安装到 bin/
+install(TARGETS ${PROJECT_NAME} DESTINATION ./)

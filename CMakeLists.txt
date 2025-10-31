@@ -14,8 +14,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE hello)
 
 # 设置 RPATH（修复空格和括号问题）
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INSTALL_RPATH "$ORIGIN/lib"  # 属性名后必须有空格
-    BUILD_RPATH "$ORIGIN/lib"    # 此处同理
+    INSTALL_RPATH "\$ORIGIN/lib"  # 属性名后必须有空格
+    BUILD_RPATH "\$ORIGIN/lib"    # 此处同理
 )  # 闭合括号不可缺失
 
 # 安装配置

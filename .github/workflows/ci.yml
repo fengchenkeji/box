@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Conan package
         run: |
-          conan install . --build=missing --proflie=android
+          conan install . --build=missing --profile=android
           conan create . --profile=android -c tools.android:ndk_path="$ANDROID_NDK_HOME"
 
       - name: Find generated files and compress to ZIP

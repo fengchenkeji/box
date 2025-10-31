@@ -13,8 +13,9 @@ class helloRecipe(ConanFile):
 
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
 
-    def requirements(self):
-        self.requires("boost/1.88.0")
+    #def requirements(self):
+        #self.requires("boost/1.88.0")
+        
     def layout(self):
         # 覆盖 build_folder，使其指向当前目录下的 `build` 文件夹
         self.folders.build = os.path.join(os.getcwd(), "build")
@@ -31,7 +32,8 @@ class helloRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        pass  # 跳过安装
+        pass
+        
 
     def package_info(self):
         self.cpp_info.libs = ["hello"]

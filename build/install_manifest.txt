@@ -1,0 +1,2 @@
+/data/data/com.termux/files/home/box/app/lib/libhello.so
+/data/data/com.termux/files/home/box/app/./box

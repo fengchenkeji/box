@@ -10,3 +10,5 @@ compiler.version=19
 compiler.libcxx=c++_shared
 compiler.cppstd=14
 
+[tool_requires]
+android-ndk/[*]

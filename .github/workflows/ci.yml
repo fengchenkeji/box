@@ -34,24 +34,17 @@ jobs:
           conan install . --build=missing --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
           conan create . --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
           cmake --install build
+          patchelf --set-rpath '$ORIGIN/lib' ./app/box
 
       - name: Find generated files and compress to ZIP
         run: |
           # 假设 Conan 包生成在 ./build 或 ~/.conan/data 目录下
           # 根据实际情况调整路径（例如：查找特定文件或目录）
-          OUTPUT_DIR="./app"  # 修改为你的实际输出目录
-          ZIP_FILE="box.zip"
-
-          # 创建 ZIP 压缩包（包含所有生成的文件）
-          zip -r "$ZIP_FILE" "$OUTPUT_DIR"
-
-          # 打印文件列表（调试用）
-          echo "ZIP contents:"
-          unzip -l "$ZIP_FILE"
+          tar -czvf box.tar.gz ./app
 
       - name: Upload directory with parent
         uses: actions/upload-artifact@v4
         with:
             name: box
-            path: box.zip  # 上传 ./app/ 目录
+            path: box.tar.gz  # 上传 ./app/ 目录
             

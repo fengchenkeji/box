@@ -13,8 +13,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/lib")
 # 查找 Boost 依赖（移除 dll 组件，因为它不是链接库）
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
-# 设置安装路径
-set(CMAKE_INSTALL__CURRENT_SOURCE_DIR}/app")
+# 设置安装路径（修正语法错误）
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/app")
 
 # 生成动态库
 add_library(hello SHARED src/hello.cpp)
@@ -42,7 +42,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # 安装配置
 install(TARGETS hello DESTINATION lib)
 install(TARGETS hello_boost DESTINATION lib)
-install(TARGETS ${PROJECT_NAME} DESTINATION .)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)  # 可执行文件通常安装到 bin
 
 # 获取并安装 Boost 库（如果需要）
 if(Boost_FOUND)
@@ -51,7 +51,7 @@ if(Boost_FOUND)
         if(TARGET Boost::${lib})
             get_target_property(boost_lib_path Boost::${lib} IMPORTED_LOCATION)
             if(boost_lib_path)
-                install(FILES ${boost_lib_path} DESTINATION lib)
+                install(FILES "${boost_lib_path}" DESTINATION lib)  # 添加引号处理路径空格
             endif()
         endif()
     endforeach()

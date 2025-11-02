@@ -1,6 +1,6 @@
 // main.cpp（调用动态库的函数）
 #include <iostream>
-
+#include <boost/dll.hpp>
 // 声明动态库中的函数
 extern "C" void hello();
 

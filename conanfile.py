@@ -9,12 +9,12 @@ class helloRecipe(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
+    default_options = {"shared": False, "fPIC": True, "boost:shared":True}
 
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
 
-    #def requirements(self):
-        #self.requires("boost/1.88.0")
+    def requirements(self):
+        self.requires("boost/1.88.0")
         
     def layout(self):
         # 覆盖 build_folder，使其指向当前目录下的 `build` 文件夹

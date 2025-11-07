@@ -1,13 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(box)
 
-# 启用 Conan 支持
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/main/conan.cmake"
-                "${CMAKE_BINARY_DIR}/conan.cmake")
-endif()
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-
 # 设置 Conan 依赖
 conan_cmake_configure(
     REQUIRES boost/1.84.0

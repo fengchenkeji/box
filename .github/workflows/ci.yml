@@ -34,7 +34,7 @@ jobs:
           conan install . --build=missing --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
           conan create . --profile=android #-c tools.android:ndk_path="$ANDROID_NDK_HOME"
           cmake --install build
-          patchelf --set-rpath '$ORIGIN/lib' ./app/box
+          #patchelf --set-rpath '$ORIGIN/lib' ./app/box
 
       - name: Find generated files and compress to ZIP
         run: |

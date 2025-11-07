@@ -8,7 +8,7 @@ int main() {
     hello();  // 调用动态库中的函数
     try {
         // 加载动态库
-        dll::shared_library lib;
+        boot::dll::shared_library lib;
 
         // Linux: "./libmylib.so"
         // Windows: "mylib.dll"

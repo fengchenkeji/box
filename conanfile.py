@@ -9,7 +9,7 @@ class helloRecipe(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True, "boost/*:shared":True}
+    default_options = {"shared": False, "fPIC": True, "boost/*:shared":True, "boost:without_dll": False}
 
     exports_sources = "CMakeLists.txt", "src/*", "include/*"
 

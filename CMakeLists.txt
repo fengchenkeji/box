@@ -1,17 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 project(box)
 
-# 设置 Conan 依赖
-conan_cmake_configure(
-    REQUIRES boost/1.84.0
-    GENERATORS cmake_find_package
-)
-
-# 安装 Conan 依赖
-conan_cmake_autodetect(settings)
-conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD missing
-                    SETTINGS ${settings})
+# 包含Conan生成的文件
+include(${CMAKE_BINARY_DIR}/generators/conan_toolchain.cmake)
 
 # 处理 CMP0167 策略
 if(POLICY CMP0167)
@@ -22,7 +13,7 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/app/lib")
 
-# 查找 Conan 管理的 Boost
+# 查找Boost
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 # 设置安装路径
@@ -35,7 +26,7 @@ add_library(hello_boost SHARED src/hello_boost.cpp)
 # 生成可执行文件
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-# 链接动态库和 Boost
+# 链接动态库和Boost
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     hello
     hello_boost
@@ -43,7 +34,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Boost::filesystem
 )
 
-# 设置 RPATH
+# 设置RPATH
 set_target_properties(${PROJECT_NAME} PROPERTIES
     BUILD_WITH_INSTALL_RPATH TRUE
     INSTALL_RPATH "$ORIGIN/../lib"
@@ -58,9 +49,4 @@ install(TARGETS hello hello_boost
 install(TARGETS ${PROJECT_NAME} 
         RUNTIME DESTINATION bin)
 
-# 使用 Conan 自动打包所有依赖
-conan_create_deploy(
-    GENERATOR deploy
-    DEPLOYER full
-    DEPLOY_FOLDER ${CMAKE_INSTALL_PREFIX}
-)
+# 删除旧的conan_create_deploy调用
